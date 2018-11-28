@@ -1,6 +1,6 @@
 #include <iostream>
-#include <string>
 #include <ncurses.h>
+#include <string>
 
 int field[3][3];
 
@@ -29,11 +29,11 @@ void draw(int coordX, int coordY) {
         out = " " + getPlayer(field[y][x]) + " ";
       }
       addstr(out.c_str());
-      
+
       if (x != 2) {
         addstr("|");
       }
-     }
+    }
     addstr("\n");
   }
 }
@@ -43,12 +43,12 @@ bool checkWinner() {
           (field[1][0] == field[1][1] && field[1][1] == field[1][2]) ||
           (field[2][0] == field[2][1] && field[2][1] == field[2][2]) ||
 
-          //vertical lines
+          // vertical lines
           (field[0][0] == field[1][0] && field[1][0] == field[2][0]) ||
           (field[0][1] == field[1][1] && field[1][1] == field[2][1]) ||
           (field[0][2] == field[1][2] && field[1][2] == field[2][2]) ||
 
-          //x
+          // x
           (field[0][0] == field[1][1] && field[1][1] == field[2][2]) ||
           (field[2][0] == field[1][1] && field[1][1] == field[0][2]));
 }
@@ -76,26 +76,25 @@ int main() {
     bool enter = false;
 
     switch (key) {
-    case 'w':
-      relativeY--;
-      break;
-    case 'a':
-      relativeX--;
-      break;
-    case 's':
-      relativeY++;
-      break;
-    case 'd':
-      relativeX++;
-      break;
-    case (char)10:
-      enter = true;
-      break;
+      case 'w':
+        relativeY--;
+        break;
+      case 'a':
+        relativeX--;
+        break;
+      case 's':
+        relativeY++;
+        break;
+      case 'd':
+        relativeX++;
+        break;
+      case (char)10:
+        enter = true;
+        break;
     }
 
-    if (x + relativeX >= 0 && x + relativeX <= 2 &&
-        y + relativeY >= 0 && y + relativeY <= 2
-    ) {
+    if (x + relativeX >= 0 && x + relativeX <= 2 && y + relativeY >= 0 &&
+        y + relativeY <= 2) {
       y += relativeY;
       x += relativeX;
     }
