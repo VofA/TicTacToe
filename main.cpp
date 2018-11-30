@@ -1,114 +1,90 @@
 #include <iostream>
+#include <string>
 
-int field[3][3];
+int a[3][3];
+const int PLAYER_O = 0;
+const int PLAYER_X = 1;
 
-bool error(int x, int y) {
-    if (x < 0 || x > 2 || y < 0 || y > 2) {
-        std::cout << "Repeat enter\n";
-        return true;
-    } else {
-        return false;
-    }    
+std::string getPlayer(int player) {
+	switch (player) {
+		case PLAYER_X: {
+			return "X";
+		}
+		case PLAYER_O: {
+			return "O";
+		}
+		default: {
+			return " ";
+		}
+	}
 }
 
 void draw() {
-    
-    for(int i = 0; i < 3; i++)
-    {
-        
-        for(int j = 0; j < 3; j++)
-        {
-            if (field[i][j] != 1 && field[i][j] != 0) {
-                std::cout << " ";
-                if (j != 2) {
-                    std::cout << "|";
-                }
-            } else {
-                
-                switch (field[i][j])
-                {
-                    case 0:
-                        std::cout << "o";
-                        break;
-                       
-                
-                    default:
-                        std::cout <<  "x";    
-                        break;
-                }
-                if (j != 2) {
-                    std::cout << "|";
-                }
-            }
-        }
-        std::cout << "\n";
-    }
-    
+	std::cout << "  1 2 3 -> first\n";
+	for (int y = 0; y < 3; ++y) {
+		std::cout << y + 1 << " ";
+		for (int x = 0; x < 3; ++x) {
+			std::cout << getPlayer(a[y][x]) << "|";
+		}
+		std::cout << "\n";
+	}
+	std::cout << "y\n";
 }
 
-bool checkWinner() {
-
-    if ((field[0][0] == field[0][1] && field[0][1] == field[0][2]) || 
-        (field[1][0] == field[1][1] && field[1][1] == field[1][2]) || 
-        (field[2][0] == field[2][1] && field[2][1] == field[2][2]) || 
-
-        //vertical lines
-        (field[0][0] == field[1][0] && field[1][0] == field[2][0]) || 
-        (field[0][1] == field[1][1] && field[1][1] == field[2][1]) || 
-        (field[0][2] == field[1][2] && field[1][2] == field[2][2]) ||
-        
-        //x
-        (field[0][0] == field[1][1] && field[1][1] == field[2][2]) || 
-        (field[2][0] == field[1][1] && field[1][1] == field[0][2])
-        ) {
-            return true;
-        } else {
-            return false;
-        }
-
+bool check() {
+	if ( (a[0][0] == a[1][1] && a[1][1] == a[2][2]) ||
+	     (a[0][2] == a[1][1] && a[1][1] == a[2][0]) ||
+	     (a[1][0] == a[1][1] && a[1][1] == a[1][2]) ||
+	     (a[0][1] == a[1][1] && a[1][1] == a[2][1]) ||
+	     (a[0][0] == a[0][1] && a[0][1] == a[0][2]) ||
+	     (a[0][0] == a[1][0] && a[1][0] == a[2][0]) ||
+	     (a[2][0] == a[2][1] && a[1][1] == a[2][2]) ||
+	     (a[2][2] == a[1][2] && a[1][2] == a[0][2])
+	) {
+		return true;
+	} else {
+		return false;
+	}
 }
 
 int main() {
-    int x, y;
-    const int PLAYER_1 = 1, PLAYER_2 = 0;
+	for (int y = 0; y < 3; ++y) {
+		for (int x = 0; x < 3; ++x) {
+			a[y][x] = 10 * (y + 1) + x;
+		}
+	}
+	
+	int current = 1;
+	int x, y;
+	for (int i = 0; i < 9; ++i) {
+		std::cout << "Enter coordinates: ";
+		std::cin >> x >> y;
 
-    for (int i = 0; i < 3; i++) {
-        for (int j = 0; j < 3; j++) {
-            field[i][j] = 3 * i + j + 2;
-        }
-    }
-    bool game = true, pl = true;
+		x--;
+		y--;
 
-    while (game) {
-        std::cin >> x >> y;
-        if (error(x, y)) {
-            continue;
-        }
-        if (field[x][y] == 1 || field[x][y] == 0) {
-            std::cout << "Already taken\n";
-            continue;
-        }
-        if (pl == true) {
-            field[x][y] = PLAYER_1;
-            draw();
-            pl = false;
-        } else {
-            field[x][y] = PLAYER_2;
-            draw();
-            pl = true;
-        }
-        
-        if (checkWinner()) {
-            if (pl == false) {
-                std::cout << "player 1 won\n";
-                game = false;
-            } else {
-                std::cout << "player 2 won\n";
-                game = false;
-            }
-        } 
-        
-    }
+		if (a[y][x] == PLAYER_O || a[y][x] == PLAYER_X) {
+			std::cout << "Coordinates is busy!\n";
+			i--;
+			continue;
+		}
 
-    return 0;
+		a[y][x] = current;
+
+		draw();
+
+		int result = check();
+		if (result) {
+			std::cout << "Winner is " << getPlayer(current) << ". ";
+			break;
+		}
+
+		if (current == 1) {
+			current = 0;
+		} else {
+			current = 1;
+		}
+	}
+
+	return 0;
 }
