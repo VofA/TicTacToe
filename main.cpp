@@ -2,7 +2,7 @@
 #include <ncurses.h>
 #include <string>
 
-int field[1000][1000];
+
 
 const int PLAYER_X = 1;
 const int PLAYER_O = 0;
@@ -17,7 +17,7 @@ std::string getPlayer(int player) {
   }
 }
 
-void draw(int coordX, int coordY, int width, int height) {
+void draw(int** field, int coordX, int coordY, int width, int height) {
   clear();
 
   for (int y = 0; y < height; ++y) {
@@ -38,7 +38,7 @@ void draw(int coordX, int coordY, int width, int height) {
   }
 }
 
-bool checkWinner(int width, int height) {
+bool checkWinner(int **field, int width, int height) {
   for (int i = 0; i < height - 2; ++i) {
     for (int z = 0; z < width - 2; ++z) {
       if ((field[i][z] == field[i][z + 1] && field[i][z] == field[i][z + 2]) ||
@@ -63,6 +63,10 @@ bool checkWinner(int width, int height) {
 int main() {
   
   int width, height;
+  int** field = new int* [height];   
+  for (int i = 0 ; i < height; i++) {
+    field[i] = new int[width];  
+  }
 
 
   std::cin >> width >> height;
@@ -74,7 +78,7 @@ int main() {
       field[y][x] = 3 * y + x + 2;
     }
   }
-  draw(1, 1, width, height);
+  draw(field, 1, 1, width, height);
 
   bool currentPlayer = PLAYER_X;
 
@@ -120,21 +124,25 @@ int main() {
 
       field[y][x] = currentPlayer;
 
-      if (checkWinner(width, height)) {
+      if (checkWinner(field, width, height)) {
         break;
       }
 
       currentPlayer = !currentPlayer;
     }
 
-    draw(x, y, width, height);
+    draw(field, x, y, width, height);
   }
 
   endwin();
 
-  if (checkWinner(width, height)) {
+  if (checkWinner(field, width, height)) {
     std::cout << "Win: " << getPlayer(currentPlayer) << "\n";
   }
+  for (int i = 0; i < width; i++) {
+    delete []field[i];        
+  }
+  delete []field;
 
   return 0;
 }
