@@ -2,7 +2,7 @@
 #include <ncurses.h>
 #include <string>
 
-int field[3][3];
+int field[1000][1000];
 
 const int PLAYER_X = 1;
 const int PLAYER_O = 0;
@@ -17,11 +17,11 @@ std::string getPlayer(int player) {
   }
 }
 
-void draw(int coordX, int coordY) {
+void draw(int coordX, int coordY, int width, int height) {
   clear();
 
-  for (int y = 0; y < 3; ++y) {
-    for (int x = 0; x < 3; ++x) {
+  for (int y = 0; y < height; ++y) {
+    for (int x = 0; x < width; ++x) {
       std::string out;
       if (coordX == x && coordY == y) {
         out = "[" + getPlayer(field[y][x]) + "]";
@@ -30,7 +30,7 @@ void draw(int coordX, int coordY) {
       }
       addstr(out.c_str());
 
-      if (x != 2) {
+      if (x != width - 1) {
         addstr("|");
       }
     }
@@ -38,30 +38,43 @@ void draw(int coordX, int coordY) {
   }
 }
 
-bool checkWinner() {
-  return ((field[0][0] == field[0][1] && field[0][1] == field[0][2]) ||
-          (field[1][0] == field[1][1] && field[1][1] == field[1][2]) ||
-          (field[2][0] == field[2][1] && field[2][1] == field[2][2]) ||
+bool checkWinner(int width, int height) {
+  for (int i = 0; i < height - 2; ++i) {
+    for (int z = 0; z < width - 2; ++z) {
+      if ((field[i][z] == field[i][z + 1] && field[i][z] == field[i][z + 2]) ||
+          (field[i + 1][z] == field[i + 1][z + 1] && field[i + 1][z] == field[i + 1][z + 2]) ||
+          (field[i + 2][z] == field[i + 2][z + 1] && field[i + 2][z] == field[i][z + 2]) || 
 
           // vertical lines
-          (field[0][0] == field[1][0] && field[1][0] == field[2][0]) ||
-          (field[0][1] == field[1][1] && field[1][1] == field[2][1]) ||
-          (field[0][2] == field[1][2] && field[1][2] == field[2][2]) ||
+          (field[i][z] == field[i + 1][z] && field[i + 1][z] == field[i + 2][z]) ||
+          (field[i][z + 1] == field[i + 1][z + 1] && field[i + 1][z + 1] == field[i + 2][z + 1]) ||
+          (field[i][z + 2] == field[i + 1][z + 2] && field[i + 1][z + 2] == field[i + 2][z + 2]) ||
 
           // x
-          (field[0][0] == field[1][1] && field[1][1] == field[2][2]) ||
-          (field[2][0] == field[1][1] && field[1][1] == field[0][2]));
+          (field[i][z] == field[i + 1][z + 1] && field[i + 1][z + 1] == field[i + 2][z + 2]) ||
+          (field[i + 2][z] == field[i + 1][z + 1] && field[i + 1][z + 1] == field[i][z + 2])) { 
+            return true;
+          } 
+    }
+  }
+  return false;
 }
 
 int main() {
-  initscr();
+  
+  int width, height;
 
-  for (int y = 0; y < 3; ++y) {
-    for (int x = 0; x < 3; ++x) {
+
+  std::cin >> width >> height;
+  std::cout << "\n";
+
+  initscr();
+  for (int y = 0; y < height; ++y) {
+    for (int x = 0; x < width; ++x) {
       field[y][x] = 3 * y + x + 2;
     }
   }
-  draw(1, 1);
+  draw(1, 1, width, height);
 
   bool currentPlayer = PLAYER_X;
 
@@ -93,8 +106,8 @@ int main() {
         break;
     }
 
-    if (x + relativeX >= 0 && x + relativeX <= 2 && y + relativeY >= 0 &&
-        y + relativeY <= 2) {
+    if (x + relativeX >= 0 && x + relativeX <= width - 1 && y + relativeY >= 0 &&
+        y + relativeY <= height - 1) {
       y += relativeY;
       x += relativeX;
     }
@@ -107,19 +120,19 @@ int main() {
 
       field[y][x] = currentPlayer;
 
-      if (checkWinner()) {
+      if (checkWinner(width, height)) {
         break;
       }
 
       currentPlayer = !currentPlayer;
     }
 
-    draw(x, y);
+    draw(x, y, width, height);
   }
 
   endwin();
 
-  if (checkWinner()) {
+  if (checkWinner(width, height)) {
     std::cout << "Win: " << getPlayer(currentPlayer) << "\n";
   }
 
