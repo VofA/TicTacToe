@@ -63,14 +63,16 @@ bool checkWinner(int **field, int width, int height) {
 int main() {
   
   int width, height;
-  int** field = new int* [height];   
-  for (int i = 0 ; i < height; i++) {
-    field[i] = new int[width];  
-  }
+  
 
 
   std::cin >> width >> height;
   std::cout << "\n";
+
+  int** field = new int* [height];   
+  for (int i = 0 ; i < height; i++) {
+    field[i] = new int[width];  
+  }
 
   initscr();
   for (int y = 0; y < height; ++y) {
