@@ -38,35 +38,55 @@ void draw(int** field, int coordX, int coordY, int width, int height) {
   }
 }
 
-bool checkWinner(int **field, int width, int height) {
-  for (int i = 0; i < height - 2; ++i) {
-    for (int z = 0; z < width - 2; ++z) {
-      if ((field[i][z] == field[i][z + 1] && field[i][z] == field[i][z + 2]) ||
-          (field[i + 1][z] == field[i + 1][z + 1] && field[i + 1][z] == field[i + 1][z + 2]) ||
-          (field[i + 2][z] == field[i + 2][z + 1] && field[i + 2][z] == field[i][z + 2]) || 
+bool checkWinner(int **field, int width, int height, int numberToWin) {
+    int vert = 1, horiz = 1, x1 = 0, x2 = 0;
 
-          // vertical lines
-          (field[i][z] == field[i + 1][z] && field[i + 1][z] == field[i + 2][z]) ||
-          (field[i][z + 1] == field[i + 1][z + 1] && field[i + 1][z + 1] == field[i + 2][z + 1]) ||
-          (field[i][z + 2] == field[i + 1][z + 2] && field[i + 1][z + 2] == field[i + 2][z + 2]) ||
-
-          // x
-          (field[i][z] == field[i + 1][z + 1] && field[i + 1][z + 1] == field[i + 2][z + 2]) ||
-          (field[i + 2][z] == field[i + 1][z + 1] && field[i + 1][z + 1] == field[i][z + 2])) { 
-            return true;
-          } 
+    for (int i = 0; i < height - 1; ++i) {
+      for (int j = 0; j < width - 1; ++j) {
+        if (field[i][j] == field[i][j + 1]) {
+          horiz++;
+        } 
+      }
+      if (horiz == numberToWin) {
+              return true;
+            } 
+      horiz = 1;
     }
-  }
-  return false;
+        
+          // vertical lines
+    for (int i = 0; i < height - 1; ++i) {
+      for (int j = 0; j < width - 1; ++j) {
+        if (field[j][i] == field[j + 1][i]) {
+          vert++;
+        } 
+      }
+      if (vert == numberToWin ) {
+              return true;
+            } 
+      vert = 1;
+    }
+
+            // x
+           /* if (field[i][j] == field[i + 1][j + 1]) {
+              x1++;
+            } else {
+              x1 = 0;
+            }
+            if (field[i][width - 2 - j] == field[i + i][width - 3 - j]) { 
+              x2++;
+            } else {
+              x2 = 0;
+            } */        
+            return false; 
 }
 
 int main() {
-  
-  int width, height;
+  int width, height, numberToWin;
   
 
 
   std::cin >> width >> height;
+  std::cin >> numberToWin;
   std::cout << "\n";
 
   int** field = new int* [height];   
@@ -126,7 +146,7 @@ int main() {
 
       field[y][x] = currentPlayer;
 
-      if (checkWinner(field, width, height)) {
+      if (checkWinner(field, width, height, numberToWin)) {
         break;
       }
 
@@ -138,7 +158,7 @@ int main() {
 
   endwin();
 
-  if (checkWinner(field, width, height)) {
+  if (checkWinner(field, width, height, numberToWin)) {
     std::cout << "Win: " << getPlayer(currentPlayer) << "\n";
   }
   for (int i = 0; i < width; i++) {
