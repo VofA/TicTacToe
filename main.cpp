@@ -80,8 +80,14 @@ bool checkWinner(int **field, int width, int height, int numberToWin) {
             return false; 
 }
 
+bool checkDraw(int numberOfMoves, int width, int height) {
+  return (width * height == numberOfMoves);
+}
+
 int main() {
-  int width, height, numberToWin;
+  int width, height;
+  int numberToWin;
+  int numberOfMoves = 0;
   
 
 
@@ -145,11 +151,16 @@ int main() {
       }
 
       field[y][x] = currentPlayer;
+      numberOfMoves++;
 
       if (checkWinner(field, width, height, numberToWin)) {
         break;
       }
+      if (checkDraw(numberOfMoves, width, height)) {
+        break;
+      }
 
+      
       currentPlayer = !currentPlayer;
     }
 
@@ -160,6 +171,9 @@ int main() {
 
   if (checkWinner(field, width, height, numberToWin)) {
     std::cout << "Win: " << getPlayer(currentPlayer) << "\n";
+  }
+  if (checkDraw(numberOfMoves, width, height)) {
+    std::cout << "it's a draw" << "\n";
   }
   for (int i = 0; i < width; i++) {
     delete []field[i];        
