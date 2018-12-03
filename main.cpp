@@ -1,8 +1,7 @@
 #include <iostream>
 #include <ncurses.h>
 #include <string>
-
-
+#include <vector>
 
 const int PLAYER_X = 1;
 const int PLAYER_O = 0;
@@ -17,7 +16,11 @@ std::string getPlayer(int player) {
   }
 }
 
-void draw(int** field, int coordX, int coordY, int width, int height) {
+void draw(std::vector<std::vector<int>> &field,
+          int coordX,
+          int coordY,
+          int width,
+          int height) {
   clear();
 
   for (int y = 0; y < height; ++y) {
@@ -38,40 +41,47 @@ void draw(int** field, int coordX, int coordY, int width, int height) {
   }
 }
 
-bool checkWinner(int **field, int width, int height) {
+bool checkWinner(std::vector<std::vector<int>> &field, int width, int height) {
   for (int i = 0; i < height - 2; ++i) {
     for (int z = 0; z < width - 2; ++z) {
       if ((field[i][z] == field[i][z + 1] && field[i][z] == field[i][z + 2]) ||
-          (field[i + 1][z] == field[i + 1][z + 1] && field[i + 1][z] == field[i + 1][z + 2]) ||
-          (field[i + 2][z] == field[i + 2][z + 1] && field[i + 2][z] == field[i][z + 2]) || 
+          (field[i + 1][z] == field[i + 1][z + 1] &&
+           field[i + 1][z] == field[i + 1][z + 2]) ||
+          (field[i + 2][z] == field[i + 2][z + 1] &&
+           field[i + 2][z] == field[i][z + 2]) ||
 
           // vertical lines
-          (field[i][z] == field[i + 1][z] && field[i + 1][z] == field[i + 2][z]) ||
-          (field[i][z + 1] == field[i + 1][z + 1] && field[i + 1][z + 1] == field[i + 2][z + 1]) ||
-          (field[i][z + 2] == field[i + 1][z + 2] && field[i + 1][z + 2] == field[i + 2][z + 2]) ||
+          (field[i][z] == field[i + 1][z] &&
+           field[i + 1][z] == field[i + 2][z]) ||
+          (field[i][z + 1] == field[i + 1][z + 1] &&
+           field[i + 1][z + 1] == field[i + 2][z + 1]) ||
+          (field[i][z + 2] == field[i + 1][z + 2] &&
+           field[i + 1][z + 2] == field[i + 2][z + 2]) ||
 
           // x
-          (field[i][z] == field[i + 1][z + 1] && field[i + 1][z + 1] == field[i + 2][z + 2]) ||
-          (field[i + 2][z] == field[i + 1][z + 1] && field[i + 1][z + 1] == field[i][z + 2])) { 
-            return true;
-          } 
+          (field[i][z] == field[i + 1][z + 1] &&
+           field[i + 1][z + 1] == field[i + 2][z + 2]) ||
+          (field[i + 2][z] == field[i + 1][z + 1] &&
+           field[i + 1][z + 1] == field[i][z + 2])) {
+        return true;
+      }
     }
   }
   return false;
 }
 
 int main() {
-  
-  int width, height;
-  
 
+  int width, height;
 
   std::cin >> width >> height;
   std::cout << "\n";
 
-  int** field = new int* [height];   
-  for (int i = 0 ; i < height; i++) {
-    field[i] = new int[width];  
+  std::vector<std::vector<int>> field;
+  field.resize(height);
+
+  for (int i = 0; i < height; ++i) {
+    field[i].resize(width);
   }
 
   initscr();
@@ -112,8 +122,8 @@ int main() {
         break;
     }
 
-    if (x + relativeX >= 0 && x + relativeX <= width - 1 && y + relativeY >= 0 &&
-        y + relativeY <= height - 1) {
+    if (x + relativeX >= 0 && x + relativeX <= width - 1 &&
+        y + relativeY >= 0 && y + relativeY <= height - 1) {
       y += relativeY;
       x += relativeX;
     }
@@ -141,10 +151,6 @@ int main() {
   if (checkWinner(field, width, height)) {
     std::cout << "Win: " << getPlayer(currentPlayer) << "\n";
   }
-  for (int i = 0; i < width; i++) {
-    delete []field[i];        
-  }
-  delete []field;
 
   return 0;
 }
