@@ -5,7 +5,7 @@
 
 const int PLAYER_X = 1;
 const int PLAYER_O = 0;
-std::string getPlayer(int player) {
+std::string getPlayer(const int &player) {
   switch (player) {
     case PLAYER_X:
       return "x";
@@ -16,11 +16,25 @@ std::string getPlayer(int player) {
   }
 }
 
-void draw(std::vector<std::vector<int>> &field,
-          int coordX,
-          int coordY,
-          int width,
-          int height) {
+int nilIfNegative(const int &number) {
+  if (number < 0) {
+    return 0;
+  }
+  return number;
+}
+
+int numberIfMax(const int &number, const int &max) {
+  if (number > max) {
+    return max;
+  }
+  return number;
+}
+
+void draw(const std::vector<std::vector<int>> &field,
+          const int &coordX,
+          const int &coordY,
+          const int &width,
+          const int &height) {
   clear();
 
   for (int y = 0; y < height; ++y) {
@@ -41,40 +55,63 @@ void draw(std::vector<std::vector<int>> &field,
   }
 }
 
-bool checkWinner(std::vector<std::vector<int>> &field, int width, int height) {
-  for (int i = 0; i < height - 2; ++i) {
-    for (int z = 0; z < width - 2; ++z) {
-      if ((field[i][z] == field[i][z + 1] && field[i][z] == field[i][z + 2]) ||
-          (field[i + 1][z] == field[i + 1][z + 1] &&
-           field[i + 1][z] == field[i + 1][z + 2]) ||
-          (field[i + 2][z] == field[i + 2][z + 1] &&
-           field[i + 2][z] == field[i][z + 2]) ||
+bool checkWinner(const std::vector<std::vector<int>> &field,
+                 const int &width,
+                 const int &height,
+                 const int &n,
+                 const int &cx,
+                 const int &cy) {
 
-          // vertical lines
-          (field[i][z] == field[i + 1][z] &&
-           field[i + 1][z] == field[i + 2][z]) ||
-          (field[i][z + 1] == field[i + 1][z + 1] &&
-           field[i + 1][z + 1] == field[i + 2][z + 1]) ||
-          (field[i][z + 2] == field[i + 1][z + 2] &&
-           field[i + 1][z + 2] == field[i + 2][z + 2]) ||
+  for (int y = nilIfNegative(cy - (n - 1));
+       y <= numberIfMax(cy + (n - 1), height - 1) - n + 1;
+       ++y) {
+    int checkElement = field[y][cx];
 
-          // x
-          (field[i][z] == field[i + 1][z + 1] &&
-           field[i + 1][z + 1] == field[i + 2][z + 2]) ||
-          (field[i + 2][z] == field[i + 1][z + 1] &&
-           field[i + 1][z + 1] == field[i][z + 2])) {
-        return true;
+    bool result = true;
+    for (int c = 1; c < n; ++c) {
+
+      if (field[y + c][cx] != checkElement) {
+        result = false;
+        break;
       }
     }
+    if (result) {
+      return true;
+    }
   }
+  for (int x = nilIfNegative(cx - (n - 1));
+       x <= numberIfMax(cx + (n - 1), width - 1) - n + 1;
+       ++x) {
+    int checkElement = field[cy][x];
+
+    bool result = true;
+    for (int c = 1; c < n; ++c) {
+
+      if (field[cy][x + c] != checkElement) {
+        result = false;
+        break;
+      }
+    }
+
+    if (result) {
+      return true;
+    }
+  }
+
   return false;
 }
 
-int main() {
+bool checkDraw(const int &numberOfMoves, const int &width, const int &height) {
+  return (width * height == numberOfMoves);
+}
 
+int main() {
   int width, height;
+  int numberToWin;
+  int numberOfMoves = 0;
 
   std::cin >> width >> height;
+  std::cin >> numberToWin;
   std::cout << "\n";
 
   std::vector<std::vector<int>> field;
@@ -98,6 +135,7 @@ int main() {
 
   while (true) {
     char key = getch();
+    clear();
 
     int relativeX = 0;
     int relativeY = 0;
@@ -135,8 +173,12 @@ int main() {
       }
 
       field[y][x] = currentPlayer;
+      numberOfMoves++;
 
-      if (checkWinner(field, width, height)) {
+      if (checkWinner(field, width, height, numberToWin, x, y)) {
+        break;
+      }
+      if (checkDraw(numberOfMoves, width, height)) {
         break;
       }
 
@@ -148,8 +190,12 @@ int main() {
 
   endwin();
 
-  if (checkWinner(field, width, height)) {
+  if (checkWinner(field, width, height, numberToWin, x, y)) {
     std::cout << "Win: " << getPlayer(currentPlayer) << "\n";
+  }
+  if (checkDraw(numberOfMoves, width, height)) {
+    std::cout << "it's a draw"
+              << "\n";
   }
 
   return 0;
