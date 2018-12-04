@@ -15,5 +15,5 @@ LINK_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR}/libraries /usr/local/lib)
 
 add_executable(${PROJECT_NAME} ${SOURCES})
 
-# target_link_libraries(${PROJECT_NAME} pthread ncurses boost_system-mt)
-target_link_libraries(${PROJECT_NAME} pthread ncurses boost_system)
+# target_link_libraries(${PROJECT_NAME} ncurses)
+target_link_libraries(${PROJECT_NAME} ncurses)
