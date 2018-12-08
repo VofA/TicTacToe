@@ -10,10 +10,9 @@ file(GLOB_RECURSE SOURCES "*.cpp")
 add_definitions(-std=c++17 -g -Wall -Wextra)
 # add_definitions(-std=c++17 -g0 -w)
 
-INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR}/libraries /usr/local/include)
-LINK_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR}/libraries /usr/local/lib)
+INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR}/../includes /usr/local/include)
+LINK_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR}/../libraries /usr/local/lib)
 
 add_executable(${PROJECT_NAME} ${SOURCES})
 
-# target_link_libraries(${PROJECT_NAME} pthread ncurses boost_system-mt)
-target_link_libraries(${PROJECT_NAME} pthread ncurses boost_system)
+target_link_libraries(${PROJECT_NAME} pthread ncurses)
