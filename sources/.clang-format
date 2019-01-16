@@ -25,7 +25,7 @@ MaxEmptyLinesToKeep: 1 # Сохранять одну строку
 NamespaceIndentation: All # Табуляция namespace
 PointerAlignment: Right # * и & справа
 ReflowComments: true # Правильные коментарии
-SortIncludes: true # Сортировка include
+SortIncludes: false # Сортировка include
 SpaceAfterCStyleCast: false # пробел между (int) a
 SpaceBeforeParens: ControlStatements # Пробел после if
 Standard: Cpp11

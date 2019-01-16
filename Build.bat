@@ -1,1 +1,12 @@
-bash -c "dos2unix Build.sh; ./Build.sh"
+@echo off
+
+cd sources
+
+@echo off
+
+:do
+  cls
+  cmake ./
+  set /p input=
+
+goto do
