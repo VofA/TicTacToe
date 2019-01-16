@@ -1,12 +1,14 @@
 #ifndef HPP_TTT_NET
 #define HPP_TTT_NET
 
-#include <boost/array.hpp>
-#include <boost/asio.hpp>
+// #include <boost/array.hpp>
+#include <array>
+// #include <boost/asio.hpp>
+#include <asio.hpp>
 #include <iostream>
 #include <string>
 
-using boost::asio::ip::tcp;
+using asio::ip::tcp;
 
 class TTTNet {
   public:
@@ -24,26 +26,26 @@ class TTTNet {
 
   void write(const std::string &message) {
     try {
-      boost::system::error_code error;
-      boost::asio::write((*_socket), boost::asio::buffer(message), error);
+      asio::error_code error;
+      asio::write((*_socket), asio::buffer(message), error);
 
       if (error) {
-        throw boost::system::system_error(error);
+        throw asio::system_error(error);
       }
     } catch (std::exception &e) {
       std::cerr << e.what() << std::endl;
       exit(EXIT_FAILURE);
     }
   }
-  boost::array<char, 128> read() {
+  std::array<char, 128> read() {
     try {
-      boost::array<char, 128> buf;
-      boost::system::error_code error;
+      std::array<char, 128> buf;
+      asio::error_code error;
 
-      /*size_t len = */ (*_socket).read_some(boost::asio::buffer(buf), error);
+      /*size_t len = */ (*_socket).read_some(asio::buffer(buf), error);
 
       if (error) {
-        throw boost::system::system_error(error);
+        throw asio::system_error(error);
       }
 
       return buf;
@@ -56,7 +58,7 @@ class TTTNet {
   private:
   tcp::socket *getClientSocket(const std::string &host) {
     try {
-      boost::asio::io_service io_service;
+      asio::io_service io_service;
 
       tcp::resolver resolver(io_service);
       tcp::resolver::query query(host, "daytime");
@@ -64,7 +66,7 @@ class TTTNet {
 
       tcp::socket *socket = new tcp::socket(io_service);
 
-      boost::asio::connect(*socket, endpoint_iterator);
+      asio::connect(*socket, endpoint_iterator);
       return socket;
     } catch (std::exception &e) {
       std::cerr << e.what() << std::endl;
@@ -73,7 +75,7 @@ class TTTNet {
   }
   tcp::socket *getServerSocket() {
     try {
-      boost::asio::io_service io_service;
+      asio::io_service io_service;
 
       tcp::acceptor acceptor(io_service, tcp::endpoint(tcp::v4(), 13));
 

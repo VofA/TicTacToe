@@ -114,27 +114,26 @@ bool checkDraw(const int &numberOfMoves, const int &width, const int &height) {
 }
 
 int main(int argc, char *argv[]) {
-  int width, height;
-  int numberToWin;
-  int numberOfMoves = 0;
-
   TTTNet *net;
-
   if (argc == 1) {
     net = new TTTNet();
   } else {
     net = new TTTNet(argv[1]);
   }
 
+  int width;
+  int height;
+  int numberToWin;
+
+  initscr();
   if ((*net).isServer()) {
-    std::cout << "Enter width, height, size: " << std::endl;
-    std::cin >> width >> height;
-    std::cin >> numberToWin;
-    std::cout << std::endl;
+    addstr("Enter width, height, size: ");
+    refresh();
+    scanw("%d %d %d", &width, &height, &numberToWin);
 
     (*net).write("s" + std::to_string(width) + std::to_string(height));
   } else {
-    boost::array<char, 128> buf;
+    std::array<char, 128> buf;
     buf = (*net).read();
 
     width  = buf[1] - '0';
@@ -143,14 +142,15 @@ int main(int argc, char *argv[]) {
 
   std::vector<std::vector<int>> field;
   field.resize(height);
-
   for (int i = 0; i < height; ++i) {
     field[i].resize(width);
   }
 
   bool currentPlayer = PLAYER_X;
   bool myTurn        = (*net).isServer();
-  int x = 1, y = 1;
+  int x              = 1;
+  int y              = 1;
+  int numberOfMoves  = 0;
 
   for (int y = 0; y < height; ++y) {
     for (int x = 0; x < width; ++x) {
@@ -158,19 +158,16 @@ int main(int argc, char *argv[]) {
     }
   }
 
-  initscr();
   draw(field, x, y, width, height, myTurn);
 
   while (true) {
     if (myTurn) {
       bool enter = false;
       while (!enter) {
-        char key = getch();
-
         int relativeX = 0;
         int relativeY = 0;
 
-        switch (key) {
+        switch (getch()) {
           case 'w':
             relativeY--;
             break;
@@ -205,7 +202,7 @@ int main(int argc, char *argv[]) {
 
       (*net).write("e" + std::to_string(x) + std::to_string(y));
     } else {
-      boost::array<char, 128> buf;
+      std::array<char, 128> buf;
 
       do {
         buf = (*net).read();
@@ -237,15 +234,18 @@ int main(int argc, char *argv[]) {
     draw(field, x, y, width, height, myTurn);
   }
 
-  endwin();
+  clear();
 
   if (checkWinner(field, width, height, numberToWin, x, y)) {
-    std::cout << "Win: " << getPlayer(currentPlayer) << "\n";
+    printw("Win: %s\n", getPlayer(currentPlayer).c_str());
+    // addstr("Win: " + getPlayer(currentPlayer) + "\n");
+  } else if (checkDraw(numberOfMoves, width, height)) {
+    addstr("It's a draw\n");
   }
-  if (checkDraw(numberOfMoves, width, height)) {
-    std::cout << "it's a draw"
-              << "\n";
-  }
+  refresh();
+
+  getch();
+  endwin();
 
   return 0;
 }
