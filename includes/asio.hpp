@@ -12,7 +12,7 @@
 #define ASIO_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
-#pragma once
+# pragma once
 #endif // defined(_MSC_VER) && (_MSC_VER >= 1200)
 
 #include "asio/associated_allocator.hpp"
@@ -33,19 +33,19 @@
 #include "asio/basic_waitable_timer.hpp"
 #include "asio/bind_executor.hpp"
 #include "asio/buffer.hpp"
-#include "asio/buffered_read_stream.hpp"
 #include "asio/buffered_read_stream_fwd.hpp"
-#include "asio/buffered_stream.hpp"
+#include "asio/buffered_read_stream.hpp"
 #include "asio/buffered_stream_fwd.hpp"
-#include "asio/buffered_write_stream.hpp"
+#include "asio/buffered_stream.hpp"
 #include "asio/buffered_write_stream_fwd.hpp"
+#include "asio/buffered_write_stream.hpp"
 #include "asio/buffers_iterator.hpp"
 #include "asio/completion_condition.hpp"
 #include "asio/connect.hpp"
 #include "asio/coroutine.hpp"
 #include "asio/datagram_socket_service.hpp"
-#include "asio/deadline_timer.hpp"
 #include "asio/deadline_timer_service.hpp"
+#include "asio/deadline_timer.hpp"
 #include "asio/defer.hpp"
 #include "asio/dispatch.hpp"
 #include "asio/error.hpp"

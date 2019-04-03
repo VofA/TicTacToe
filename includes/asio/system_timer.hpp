@@ -12,7 +12,7 @@
 #define ASIO_SYSTEM_TIMER_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
-#pragma once
+# pragma once
 #endif // defined(_MSC_VER) && (_MSC_VER >= 1200)
 
 #include "asio/detail/config.hpp"
@@ -24,16 +24,16 @@
 
 namespace asio {
 
-  /// Typedef for a timer based on the system clock.
-  /**
-   * This typedef uses the C++11 @c &lt;chrono&gt; standard library facility, if
-   * available. Otherwise, it may use the Boost.Chrono library. To explicitly
-   * utilise Boost.Chrono, use the basic_waitable_timer template directly:
-   * @code
-   * typedef basic_waitable_timer<boost::chrono::system_clock> timer;
-   * @endcode
-   */
-  typedef basic_waitable_timer<chrono::system_clock> system_timer;
+/// Typedef for a timer based on the system clock.
+/**
+ * This typedef uses the C++11 @c &lt;chrono&gt; standard library facility, if
+ * available. Otherwise, it may use the Boost.Chrono library. To explicitly
+ * utilise Boost.Chrono, use the basic_waitable_timer template directly:
+ * @code
+ * typedef basic_waitable_timer<boost::chrono::system_clock> timer;
+ * @endcode
+ */
+typedef basic_waitable_timer<chrono::system_clock> system_timer;
 
 } // namespace asio
 

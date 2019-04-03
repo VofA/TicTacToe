@@ -12,7 +12,7 @@
 #define ASIO_SSL_STREAM_BASE_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
-#pragma once
+# pragma once
 #endif // defined(_MSC_VER) && (_MSC_VER >= 1200)
 
 #include "asio/detail/config.hpp"
@@ -20,28 +20,31 @@
 #include "asio/detail/push_options.hpp"
 
 namespace asio {
-  namespace ssl {
+namespace ssl {
 
-    /// The stream_base class is used as a base for the asio::ssl::stream
-    /// class template so that we have a common place to define various enums.
-    class stream_base {
-      public:
-      /// Different handshake types.
-      enum handshake_type {
-        /// Perform handshaking as a client.
-        client,
+/// The stream_base class is used as a base for the asio::ssl::stream
+/// class template so that we have a common place to define various enums.
+class stream_base
+{
+public:
+  /// Different handshake types.
+  enum handshake_type
+  {
+    /// Perform handshaking as a client.
+    client,
 
-        /// Perform handshaking as a server.
-        server
-      };
+    /// Perform handshaking as a server.
+    server
+  };
 
-      protected:
-      /// Protected destructor to prevent deletion through this type.
-      ~stream_base() {
-      }
-    };
+protected:
+  /// Protected destructor to prevent deletion through this type.
+  ~stream_base()
+  {
+  }
+};
 
-  } // namespace ssl
+} // namespace ssl
 } // namespace asio
 
 #include "asio/detail/pop_options.hpp"

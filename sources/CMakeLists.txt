@@ -21,8 +21,8 @@ endif()
 
 project(App)
 
-add_definitions(-std=c++17 -g -Wall -Wextra)
-# add_definitions(-std=c++17 -g0 -w)
+add_definitions(-std=c++17 -g -Wall -Wextra -DASIO_STANDALONE)
+# add_definitions(-std=c++17 -g0 -w -DASIO_STANDALONE)
 
 INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR}/../includes /usr/local/include)
 LINK_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR}/../libraries /usr/local/lib)

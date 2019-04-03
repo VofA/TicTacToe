@@ -12,7 +12,7 @@
 #define ASIO_SSL_DETAIL_OPENSSL_TYPES_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
-#pragma once
+# pragma once
 #endif // defined(_MSC_VER) && (_MSC_VER >= 1200)
 
 #include "asio/detail/config.hpp"
@@ -20,7 +20,7 @@
 #include <openssl/conf.h>
 #include <openssl/ssl.h>
 #if !defined(OPENSSL_NO_ENGINE)
-#include <openssl/engine.h>
+# include <openssl/engine.h>
 #endif // !defined(OPENSSL_NO_ENGINE)
 #include <openssl/dh.h>
 #include <openssl/err.h>

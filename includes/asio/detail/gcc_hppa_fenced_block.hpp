@@ -12,7 +12,7 @@
 #define ASIO_DETAIL_GCC_HPPA_FENCED_BLOCK_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
-#pragma once
+# pragma once
 #endif // defined(_MSC_VER) && (_MSC_VER >= 1200)
 
 #include "asio/detail/config.hpp"
@@ -24,35 +24,41 @@
 #include "asio/detail/push_options.hpp"
 
 namespace asio {
-  namespace detail {
+namespace detail {
 
-    class gcc_hppa_fenced_block : private noncopyable {
-      public:
-      enum half_t { half };
-      enum full_t { full };
+class gcc_hppa_fenced_block
+  : private noncopyable
+{
+public:
+  enum half_t { half };
+  enum full_t { full };
 
-      // Constructor for a half fenced block.
-      explicit gcc_hppa_fenced_block(half_t) {
-      }
+  // Constructor for a half fenced block.
+  explicit gcc_hppa_fenced_block(half_t)
+  {
+  }
 
-      // Constructor for a full fenced block.
-      explicit gcc_hppa_fenced_block(full_t) {
-        barrier();
-      }
+  // Constructor for a full fenced block.
+  explicit gcc_hppa_fenced_block(full_t)
+  {
+    barrier();
+  }
 
-      // Destructor.
-      ~gcc_hppa_fenced_block() {
-        barrier();
-      }
+  // Destructor.
+  ~gcc_hppa_fenced_block()
+  {
+    barrier();
+  }
 
-      private:
-      static void barrier() {
-        // This is just a placeholder and almost certainly not sufficient.
-        __asm__ __volatile__("" : : : "memory");
-      }
-    };
+private:
+  static void barrier()
+  {
+    // This is just a placeholder and almost certainly not sufficient.
+    __asm__ __volatile__ ("" : : : "memory");
+  }
+};
 
-  } // namespace detail
+} // namespace detail
 } // namespace asio
 
 #include "asio/detail/pop_options.hpp"

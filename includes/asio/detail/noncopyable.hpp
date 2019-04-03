@@ -12,7 +12,7 @@
 #define ASIO_DETAIL_NONCOPYABLE_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
-#pragma once
+# pragma once
 #endif // defined(_MSC_VER) && (_MSC_VER >= 1200)
 
 #include "asio/detail/config.hpp"
@@ -20,23 +20,21 @@
 #include "asio/detail/push_options.hpp"
 
 namespace asio {
-  namespace detail {
+namespace detail {
 
-    class noncopyable {
-      protected:
-      noncopyable() {
-      }
-      ~noncopyable() {
-      }
+class noncopyable
+{
+protected:
+  noncopyable() {}
+  ~noncopyable() {}
+private:
+  noncopyable(const noncopyable&);
+  const noncopyable& operator=(const noncopyable&);
+};
 
-      private:
-      noncopyable(const noncopyable &);
-      const noncopyable &operator=(const noncopyable &);
-    };
+} // namespace detail
 
-  } // namespace detail
-
-  using asio::detail::noncopyable;
+using asio::detail::noncopyable;
 
 } // namespace asio
 

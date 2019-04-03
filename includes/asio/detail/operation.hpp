@@ -12,27 +12,27 @@
 #define ASIO_DETAIL_OPERATION_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
-#pragma once
+# pragma once
 #endif // defined(_MSC_VER) && (_MSC_VER >= 1200)
 
 #include "asio/detail/config.hpp"
 
 #if defined(ASIO_HAS_IOCP)
-#include "asio/detail/win_iocp_operation.hpp"
+# include "asio/detail/win_iocp_operation.hpp"
 #else
-#include "asio/detail/scheduler_operation.hpp"
+# include "asio/detail/scheduler_operation.hpp"
 #endif
 
 namespace asio {
-  namespace detail {
+namespace detail {
 
 #if defined(ASIO_HAS_IOCP)
-    typedef win_iocp_operation operation;
+typedef win_iocp_operation operation;
 #else
-    typedef scheduler_operation operation;
+typedef scheduler_operation operation;
 #endif
 
-  } // namespace detail
+} // namespace detail
 } // namespace asio
 
 #endif // ASIO_DETAIL_OPERATION_HPP

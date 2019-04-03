@@ -12,22 +12,23 @@
 #define ASIO_DEADLINE_TIMER_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
-#pragma once
+# pragma once
 #endif // defined(_MSC_VER) && (_MSC_VER >= 1200)
 
 #include "asio/detail/config.hpp"
 
-#if defined(ASIO_HAS_BOOST_DATE_TIME) || defined(GENERATING_DOCUMENTATION)
+#if defined(ASIO_HAS_BOOST_DATE_TIME) \
+  || defined(GENERATING_DOCUMENTATION)
 
-#include "asio/basic_deadline_timer.hpp"
 #include "asio/detail/socket_types.hpp" // Must come before posix_time.
+#include "asio/basic_deadline_timer.hpp"
 
 #include <boost/date_time/posix_time/posix_time_types.hpp>
 
 namespace asio {
 
-  /// Typedef for the typical usage of timer. Uses a UTC clock.
-  typedef basic_deadline_timer<boost::posix_time::ptime> deadline_timer;
+/// Typedef for the typical usage of timer. Uses a UTC clock.
+typedef basic_deadline_timer<boost::posix_time::ptime> deadline_timer;
 
 } // namespace asio
 

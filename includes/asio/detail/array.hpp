@@ -12,27 +12,27 @@
 #define ASIO_DETAIL_ARRAY_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
-#pragma once
+# pragma once
 #endif // defined(_MSC_VER) && (_MSC_VER >= 1200)
 
 #include "asio/detail/config.hpp"
 
 #if defined(ASIO_HAS_STD_ARRAY)
-#include <array>
+# include <array>
 #else // defined(ASIO_HAS_STD_ARRAY)
-#include <boost/array.hpp>
+# include <boost/array.hpp>
 #endif // defined(ASIO_HAS_STD_ARRAY)
 
 namespace asio {
-  namespace detail {
+namespace detail {
 
 #if defined(ASIO_HAS_STD_ARRAY)
-    using std::array;
-#else  // defined(ASIO_HAS_STD_ARRAY)
-    using boost::array;
+using std::array;
+#else // defined(ASIO_HAS_STD_ARRAY)
+using boost::array;
 #endif // defined(ASIO_HAS_STD_ARRAY)
 
-  } // namespace detail
+} // namespace detail
 } // namespace asio
 
 #endif // ASIO_DETAIL_ARRAY_HPP
